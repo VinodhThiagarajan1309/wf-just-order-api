@@ -25,63 +25,34 @@ namespace IO.Swagger.Controllers
     /// 
     /// </summary>
     [ApiController]
-    public class Class3rdPartyApiController : ControllerBase
+    public class OrdersApiController : ControllerBase
     { 
         /// <summary>
         /// 
         /// </summary>
-        /// <remarks>Get 1 item based on a UUID</remarks>
-        /// <param name="itemId">The UUID of the Item that needs to be retreived.</param>
-        /// <response code="200">A successful retrieval of the Item</response>
+        /// <remarks>Create an order with a list of Line Items</remarks>
+        /// <param name="body"></param>
+        /// <response code="201">The Order will be Returned with the generated UUID and all the billing details.</response>
         /// <response code="400">The Submitted Request is Malformed.</response>
-        [HttpGet]
-        [Route("/VinodhThiagarajan1309/just-orders-api/1.0.0/item/{itemId}")]
+        [HttpPost]
+        [Route("/VinodhThiagarajan1309/just-orders-api/1.0.0/order")]
         [ValidateModelState]
-        [SwaggerOperation("GetV1Item")]
-        [SwaggerResponse(statusCode: 200, type: typeof(Item), description: "A successful retrieval of the Item")]
+        [SwaggerOperation("CreateV1Order")]
+        [SwaggerResponse(statusCode: 201, type: typeof(Order), description: "The Order will be Returned with the generated UUID and all the billing details.")]
         [SwaggerResponse(statusCode: 400, type: typeof(BadRequestMadeModel), description: "The Submitted Request is Malformed.")]
-        public virtual IActionResult GetV1Item([FromRoute][Required]string itemId)
+        public virtual IActionResult CreateV1Order([FromBody]List<LineItem> body)
         { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(Item));
+            //TODO: Uncomment the next line to return response 201 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(201, default(Order));
 
             //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(400, default(BadRequestMadeModel));
             string exampleJson = null;
-            exampleJson = "{\n  \"itemId\" : \"907ca62f-33e0-46fd-aebb-5eb59a2bc379\"\n}";
+            exampleJson = "{\n  \"lineItems\" : [ {\n    \"itemId\" : \"a72419bc-0991-456b-90e2-af648bfeb37c\",\n    \"quantity\" : 4,\n    \"itemPrice\" : 2.99\n  }, {\n    \"itemId\" : \"a72419bc-0991-456b-90e2-af648bfeb37c\",\n    \"quantity\" : 4,\n    \"itemPrice\" : 2.99\n  } ],\n  \"total\" : 13.53,\n  \"orderId\" : \"02e4d444-1997-49e7-b287-a496c41d73d6\",\n  \"salesTax\" : 0.65,\n  \"orderSubTotal\" : 12.88\n}";
             
                         var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<Item>(exampleJson)
-                        : default(Item);            //TODO: Change the data returned
-            return new ObjectResult(example);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <remarks>Get the List of Food items from the system.</remarks>
-        /// <param name="limit"></param>
-        /// <response code="200">The list of recently added food items will be returned.</response>
-        /// <response code="400">The Submitted Request is Malformed.</response>
-        [HttpGet]
-        [Route("/VinodhThiagarajan1309/just-orders-api/1.0.0/item")]
-        [ValidateModelState]
-        [SwaggerOperation("GetV1ItemList")]
-        [SwaggerResponse(statusCode: 200, type: typeof(List<Item>), description: "The list of recently added food items will be returned.")]
-        [SwaggerResponse(statusCode: 400, type: typeof(BadRequestMadeModel), description: "The Submitted Request is Malformed.")]
-        public virtual IActionResult GetV1ItemList([FromQuery][Required()]decimal? limit)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(List<Item>));
-
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400, default(BadRequestMadeModel));
-            string exampleJson = null;
-            exampleJson = "[ {\n  \"itemId\" : \"907ca62f-33e0-46fd-aebb-5eb59a2bc379\"\n}, {\n  \"itemId\" : \"907ca62f-33e0-46fd-aebb-5eb59a2bc379\"\n} ]";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<List<Item>>(exampleJson)
-                        : default(List<Item>);            //TODO: Change the data returned
+                        ? JsonConvert.DeserializeObject<Order>(exampleJson)
+                        : default(Order);            //TODO: Change the data returned
             return new ObjectResult(example);
         }
 

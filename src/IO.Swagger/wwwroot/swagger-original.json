@@ -35,13 +35,13 @@
         "parameters" : [ {
           "name" : "limit",
           "in" : "query",
-          "description" : "The number of items to return",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
           "schema" : {
-            "maximum" : 100,
-            "minimum" : 1,
-            "type" : "integer",
-            "format" : "int32",
-            "default" : 20
+            "type" : "number",
+            "description" : "returns this number of entities",
+            "enum" : [ 10, 100 ]
           }
         } ],
         "responses" : {
@@ -149,6 +149,128 @@
           }
         }
       }
+    },
+    "/order" : {
+      "get" : {
+        "tags" : [ "orders", "3rd-Party" ],
+        "description" : "Get the List of order from the system.",
+        "operationId" : "get-v1-order-list",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "number",
+            "description" : "returns this number of entities",
+            "enum" : [ 10, 100 ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The list of recently added orders  will be returned.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Order"
+                  },
+                  "x-content-type" : "application/json"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "The Submitted Request is Malformed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestMadeModel"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "orders" ],
+        "description" : "Create an order with a list of Line Items",
+        "operationId" : "create-v1-order",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/NewOrderRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "The Order will be Returned with the generated UUID and all the billing details.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "The Submitted Request is Malformed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestMadeModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{orderId}" : {
+      "get" : {
+        "tags" : [ "orders", "3rd-Party" ],
+        "description" : "Get 1 order based on a UUID",
+        "operationId" : "get-v1-order",
+        "parameters" : [ {
+          "name" : "orderId",
+          "in" : "path",
+          "description" : "The UUID of the Order that needs to be retreived.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A successful retrieval of the Order",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "The Submitted Request is Malformed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestMadeModel"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components" : {
@@ -219,6 +341,101 @@
           "message" : {
             "type" : "string"
           }
+        }
+      },
+      "Order" : {
+        "title" : "Order",
+        "maxProperties" : 1,
+        "required" : [ "lineItems", "orderId", "orderSubTotal", "salesTax", "total" ],
+        "type" : "object",
+        "properties" : {
+          "orderId" : {
+            "type" : "string",
+            "description" : "Identifier of the Placed order",
+            "format" : "uuid",
+            "example" : "02e4d444-1997-49e7-b287-a496c41d73d6"
+          },
+          "lineItems" : {
+            "minItems" : 1,
+            "uniqueItems" : true,
+            "type" : "array",
+            "description" : "List of Items submitted in this Order",
+            "items" : {
+              "$ref" : "#/components/schemas/LineItem"
+            }
+          },
+          "orderSubTotal" : {
+            "type" : "number",
+            "description" : "Total of the Items without Tax",
+            "format" : "currency",
+            "example" : 12.88
+          },
+          "salesTax" : {
+            "type" : "number",
+            "description" : "Sales Tax for this order",
+            "format" : "currency",
+            "example" : 0.65
+          },
+          "total" : {
+            "type" : "number",
+            "description" : "Order Total including Tax",
+            "format" : "currency",
+            "example" : 13.53
+          }
+        },
+        "additionalProperties" : false,
+        "description" : "An Order is created with unique Id, subtotal, tax and Grand Total along with the items that were added.",
+        "example" : {
+          "lineItems" : [ {
+            "itemId" : "a72419bc-0991-456b-90e2-af648bfeb37c",
+            "quantity" : 4,
+            "itemPrice" : 2.99
+          }, {
+            "itemId" : "a72419bc-0991-456b-90e2-af648bfeb37c",
+            "quantity" : 4,
+            "itemPrice" : 2.99
+          } ],
+          "total" : 13.53,
+          "orderId" : "02e4d444-1997-49e7-b287-a496c41d73d6",
+          "salesTax" : 0.65,
+          "orderSubTotal" : 12.88
+        }
+      },
+      "LineItem" : {
+        "type" : "object",
+        "properties" : {
+          "itemId" : {
+            "type" : "string",
+            "description" : "The Id of the item in the order",
+            "format" : "uuid",
+            "example" : "a72419bc-0991-456b-90e2-af648bfeb37c"
+          },
+          "itemPrice" : {
+            "type" : "number",
+            "description" : "The price of single line item.",
+            "format" : "currency",
+            "example" : 2.99
+          },
+          "quantity" : {
+            "maximum" : 10,
+            "minimum" : 1,
+            "type" : "number",
+            "description" : "The number of items of this kind",
+            "example" : 4
+          }
+        },
+        "description" : "List of Items that makes this order and their quantities.",
+        "example" : {
+          "itemId" : "a72419bc-0991-456b-90e2-af648bfeb37c",
+          "quantity" : 4,
+          "itemPrice" : 2.99
+        }
+      },
+      "NewOrderRequest" : {
+        "type" : "array",
+        "description" : "List of Items that makes this order.",
+        "items" : {
+          "$ref" : "#/components/schemas/LineItem"
         }
       }
     }

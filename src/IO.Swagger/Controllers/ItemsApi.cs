@@ -89,7 +89,7 @@ namespace IO.Swagger.Controllers
         /// 
         /// </summary>
         /// <remarks>Get the List of Food items from the system.</remarks>
-        /// <param name="limit">The number of items to return</param>
+        /// <param name="limit"></param>
         /// <response code="200">The list of recently added food items will be returned.</response>
         /// <response code="400">The Submitted Request is Malformed.</response>
         [HttpGet]
@@ -98,7 +98,7 @@ namespace IO.Swagger.Controllers
         [SwaggerOperation("GetV1ItemList")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<Item>), description: "The list of recently added food items will be returned.")]
         [SwaggerResponse(statusCode: 400, type: typeof(BadRequestMadeModel), description: "The Submitted Request is Malformed.")]
-        public virtual IActionResult GetV1ItemList([FromQuery][Range(1, 100)]int? limit)
+        public virtual IActionResult GetV1ItemList([FromQuery][Required()]decimal? limit)
         { 
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200, default(List<Item>));
