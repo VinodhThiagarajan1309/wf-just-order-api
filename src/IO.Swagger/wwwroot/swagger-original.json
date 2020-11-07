@@ -1,0 +1,226 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Just Order Api",
+    "description" : "An API to create and retrieve Food items and orders.",
+    "contact" : {
+      "email" : "john.doe@somecomp.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/VinodhThiagarajan1309/just-orders-api/1.0.0",
+    "description" : "This is a mocked Out of the Box OAS server. Swap this once the prod url is ready."
+  } ],
+  "tags" : [ {
+    "name" : "orders",
+    "description" : "Operations Dealing with Orders"
+  }, {
+    "name" : "items",
+    "description" : "Operations Dealing with Items"
+  }, {
+    "name" : "3rd-Party",
+    "description" : "Operations allowed for 3rd party developers"
+  } ],
+  "paths" : {
+    "/item" : {
+      "get" : {
+        "tags" : [ "items", "3rd-Party" ],
+        "description" : "Get the List of Food items from the system.",
+        "operationId" : "get-v1-item-list",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "The number of items to return",
+          "schema" : {
+            "maximum" : 100,
+            "minimum" : 1,
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 20
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The list of recently added food items will be returned.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Item"
+                  },
+                  "x-content-type" : "application/json"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "The Submitted Request is Malformed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestMadeModel"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "items" ],
+        "description" : "Create a Food item",
+        "operationId" : "create-v1-item",
+        "requestBody" : {
+          "description" : "Request Body for Creating a Food item.",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/NewItemRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "The Food item will be Returned with the generated UUID.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Item"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "The Submitted Request is Malformed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestMadeModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/item/{itemId}" : {
+      "get" : {
+        "tags" : [ "items", "3rd-Party" ],
+        "description" : "Get 1 item based on a UUID",
+        "operationId" : "get-v1-item",
+        "parameters" : [ {
+          "name" : "itemId",
+          "in" : "path",
+          "description" : "The UUID of the Item that needs to be retreived.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A successful retrieval of the Item",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Item"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "The Submitted Request is Malformed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BadRequestMadeModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Item" : {
+        "title" : "Item",
+        "required" : [ "itemId" ],
+        "type" : "object",
+        "properties" : {
+          "itemId" : {
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "This is the Unique Identifier for a Item Sold",
+            "format" : "uuid",
+            "example" : "907ca62f-33e0-46fd-aebb-5eb59a2bc379"
+          }
+        },
+        "description" : "Item Defines a Food Item, the price of the item and its unique Id",
+        "example" : {
+          "itemId" : "907ca62f-33e0-46fd-aebb-5eb59a2bc379"
+        },
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/NewItemRequest"
+        } ]
+      },
+      "NewItemRequest" : {
+        "required" : [ "itemName", "itemPrice" ],
+        "type" : "object",
+        "properties" : {
+          "itemName" : {
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "Name of the Food item.",
+            "example" : "Diet Coke"
+          },
+          "itemPrice" : {
+            "maximum" : 10.0,
+            "minimum" : 0.01,
+            "type" : "string",
+            "description" : "Price of the item.",
+            "format" : "currency",
+            "example" : "2.99"
+          }
+        },
+        "description" : "A Request to Create a Food Item in the system."
+      },
+      "BadRequestMadeModel" : {
+        "type" : "object",
+        "properties" : {
+          "domainDocs" : {
+            "type" : "string",
+            "format" : "uri",
+            "example" : "https://app.swaggerhub.com/domains/VinodhThiagarajan1309/just-orders/1.0.0"
+          }
+        },
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/ErrorModel"
+        } ]
+      },
+      "ErrorModel" : {
+        "required" : [ "code", "message" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      }
+    }
+  }
+}
