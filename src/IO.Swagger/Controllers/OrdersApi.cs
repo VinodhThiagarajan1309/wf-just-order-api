@@ -35,7 +35,7 @@ namespace IO.Swagger.Controllers
         /// <response code="201">The Order will be Returned with the generated UUID and all the billing details.</response>
         /// <response code="400">The Submitted Request is Malformed.</response>
         [HttpPost]
-        [Route("/VinodhThiagarajan1309/just-orders-api/1.0.0/order")]
+        [Route("/VinodhThiagarajan1309/just-orders-api/1.0.0/orders")]
         [ValidateModelState]
         [SwaggerOperation("CreateV1Order")]
         [SwaggerResponse(statusCode: 201, type: typeof(Order), description: "The Order will be Returned with the generated UUID and all the billing details.")]
@@ -64,7 +64,7 @@ namespace IO.Swagger.Controllers
         /// <response code="200">A successful retrieval of the Order</response>
         /// <response code="400">The Submitted Request is Malformed.</response>
         [HttpGet]
-        [Route("/VinodhThiagarajan1309/just-orders-api/1.0.0/order/{orderId}")]
+        [Route("/VinodhThiagarajan1309/just-orders-api/1.0.0/orders/{orderId}")]
         [ValidateModelState]
         [SwaggerOperation("GetV1Order")]
         [SwaggerResponse(statusCode: 200, type: typeof(Order), description: "A successful retrieval of the Order")]
@@ -93,7 +93,7 @@ namespace IO.Swagger.Controllers
         /// <response code="200">The list of recently added orders  will be returned.</response>
         /// <response code="400">The Submitted Request is Malformed.</response>
         [HttpGet]
-        [Route("/VinodhThiagarajan1309/just-orders-api/1.0.0/order")]
+        [Route("/VinodhThiagarajan1309/just-orders-api/1.0.0/orders")]
         [ValidateModelState]
         [SwaggerOperation("GetV1OrderList")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<Order>), description: "The list of recently added orders  will be returned.")]

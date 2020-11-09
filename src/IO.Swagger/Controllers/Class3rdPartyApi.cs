@@ -35,7 +35,7 @@ namespace IO.Swagger.Controllers
         /// <response code="200">A successful retrieval of the Item</response>
         /// <response code="400">The Submitted Request is Malformed.</response>
         [HttpGet]
-        [Route("/VinodhThiagarajan1309/just-orders-api/1.0.0/item/{itemId}")]
+        [Route("/VinodhThiagarajan1309/just-orders-api/1.0.0/items/{itemId}")]
         [ValidateModelState]
         [SwaggerOperation("GetV1Item")]
         [SwaggerResponse(statusCode: 200, type: typeof(Item), description: "A successful retrieval of the Item")]
@@ -64,7 +64,7 @@ namespace IO.Swagger.Controllers
         /// <response code="200">The list of recently added food items will be returned.</response>
         /// <response code="400">The Submitted Request is Malformed.</response>
         [HttpGet]
-        [Route("/VinodhThiagarajan1309/just-orders-api/1.0.0/item")]
+        [Route("/VinodhThiagarajan1309/just-orders-api/1.0.0/items")]
         [ValidateModelState]
         [SwaggerOperation("GetV1ItemList")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<Item>), description: "The list of recently added food items will be returned.")]
@@ -93,7 +93,7 @@ namespace IO.Swagger.Controllers
         /// <response code="200">A successful retrieval of the Order</response>
         /// <response code="400">The Submitted Request is Malformed.</response>
         [HttpGet]
-        [Route("/VinodhThiagarajan1309/just-orders-api/1.0.0/order/{orderId}")]
+        [Route("/VinodhThiagarajan1309/just-orders-api/1.0.0/orders/{orderId}")]
         [ValidateModelState]
         [SwaggerOperation("GetV1Order")]
         [SwaggerResponse(statusCode: 200, type: typeof(Order), description: "A successful retrieval of the Order")]
@@ -122,7 +122,7 @@ namespace IO.Swagger.Controllers
         /// <response code="200">The list of recently added orders  will be returned.</response>
         /// <response code="400">The Submitted Request is Malformed.</response>
         [HttpGet]
-        [Route("/VinodhThiagarajan1309/just-orders-api/1.0.0/order")]
+        [Route("/VinodhThiagarajan1309/just-orders-api/1.0.0/orders")]
         [ValidateModelState]
         [SwaggerOperation("GetV1OrderList")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<Order>), description: "The list of recently added orders  will be returned.")]

@@ -27,7 +27,7 @@
     "description" : "Operations allowed for 3rd party developers"
   } ],
   "paths" : {
-    "/item" : {
+    "/items" : {
       "get" : {
         "tags" : [ "items", "3rd-Party" ],
         "description" : "Get the List of Food items from the system.",
@@ -110,7 +110,7 @@
         }
       }
     },
-    "/item/{itemId}" : {
+    "/items/{itemId}" : {
       "get" : {
         "tags" : [ "items", "3rd-Party" ],
         "description" : "Get 1 item based on a UUID",
@@ -150,7 +150,7 @@
         }
       }
     },
-    "/order" : {
+    "/orders" : {
       "get" : {
         "tags" : [ "orders", "3rd-Party" ],
         "description" : "Get the List of order from the system.",
@@ -232,7 +232,7 @@
         }
       }
     },
-    "/order/{orderId}" : {
+    "/orders/{orderId}" : {
       "get" : {
         "tags" : [ "orders", "3rd-Party" ],
         "description" : "Get 1 order based on a UUID",
