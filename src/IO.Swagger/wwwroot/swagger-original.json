@@ -15,6 +15,12 @@
   "servers" : [ {
     "url" : "https://virtserver.swaggerhub.com/VinodhThiagarajan1309/just-orders-api/1.0.0",
     "description" : "This is a mocked Out of the Box OAS server. Swap this once the prod url is ready."
+  }, {
+    "url" : "https://qdr6te5c21.execute-api.us-east-1.amazonaws.com/dev",
+    "description" : "AWS API Gateway Dev url"
+  }, {
+    "url" : "https://y973r95v0b.execute-api.us-east-1.amazonaws.com/v1",
+    "description" : "AWS SAM based API Gateway"
   } ],
   "tags" : [ {
     "name" : "orders",
