@@ -1,0 +1,190 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: This is a mocked Out of the Box OAS server. Swap this once the prod url is ready.
+    url: https://virtserver.swaggerhub.com/VinodhThiagarajan1309/just-orders-api/1.0.0
+  - description: AWS API Gateway Dev url
+    url: https://qdr6te5c21.execute-api.us-east-1.amazonaws.com/dev
+  - description: AWS SAM based API Gateway
+    url: https://y973r95v0b.execute-api.us-east-1.amazonaws.com/v1
+info:
+  description: An API to create and retrieve Food items and orders.
+  version: "1.0.0"
+  title: Just Order Api
+  contact:
+    email: john.doe@somecomp.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: orders
+    description: Operations Dealing with Orders
+  - name: items
+    description: Operations Dealing with Items
+  - name: 3rd-Party
+    description: Operations allowed for 3rd party developers
+paths:
+  /items:
+    post:
+      operationId: create-v1-item
+      tags: 
+        - items
+      description: Create a Food item
+      requestBody:
+        description: Request Body for Creating a Food item.
+        required: true
+        content: 
+          'application/json':
+            schema:
+              $ref: 'https://api.swaggerhub.com/domains/VinodhThiagarajan1309/just-orders-domain-objects/1.0.0#/components/schemas/NewItemRequest'
+      responses:
+        '201':
+          description: The Food item will be Returned with the generated UUID.
+          content: 
+            application/json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/VinodhThiagarajan1309/just-orders-domain-objects/1.0.0#/components/schemas/Item'
+        '400':
+          description: The Submitted Request is Malformed.
+          content:
+            application/json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/VinodhThiagarajan1309/just-orders-domain-objects/1.0.0#/components/schemas/BadRequestMadeModel'
+    get:
+      operationId: get-v1-item-list
+      parameters: 
+        - name: limit
+          in: query
+          required: true
+          schema:
+            type: number
+            description: returns this number of entities
+            enum: [10,100] 
+      tags: 
+        - items
+        - 3rd-Party
+      description: Get the List of Food items from the system.
+      responses:
+        '200':
+          description: The list of recently added food items will be returned.
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://api.swaggerhub.com/domains/VinodhThiagarajan1309/just-orders-domain-objects/1.0.0#/components/schemas/Item'
+        '400':
+          description: The Submitted Request is Malformed.
+          content:
+            application/json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/VinodhThiagarajan1309/just-orders-domain-objects/1.0.0#/components/schemas/BadRequestMadeModel'
+  /items/{itemId}:
+    get:
+      tags: 
+        - items
+        - 3rd-Party
+      operationId: get-v1-item
+      description: Get 1 item based on a UUID
+      parameters: 
+        - in: path
+          name: itemId
+          description: The UUID of the Item that needs to be retreived.
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: A successful retrieval of the Item
+          content:
+            application/json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/VinodhThiagarajan1309/just-orders-domain-objects/1.0.0#/components/schemas/Item'
+        '400':
+          description: The Submitted Request is Malformed.
+          content:
+            application/json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/VinodhThiagarajan1309/just-orders-domain-objects/1.0.0#/components/schemas/BadRequestMadeModel'
+  /orders:
+    post:
+      tags: 
+        - orders
+      operationId: create-v1-order
+      description: Create an order with a list of Line Items
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: 'https://api.swaggerhub.com/domains/VinodhThiagarajan1309/just-orders-domain-objects/1.0.0#/components/schemas/NewOrderRequest'
+          
+        required: true
+      responses:
+        '201':
+          description: The Order will be Returned with the generated UUID and all the billing details.
+          content: 
+            application/json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/VinodhThiagarajan1309/just-orders-domain-objects/1.0.0#/components/schemas/Order'
+        '400':
+          description: The Submitted Request is Malformed.
+          content:
+            application/json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/VinodhThiagarajan1309/just-orders-domain-objects/1.0.0#/components/schemas/BadRequestMadeModel'
+    get:
+      operationId: get-v1-order-list
+      parameters: 
+        - name: limit
+          in: query
+          required: true
+          schema:
+            type: number
+            description: returns this number of entities
+            enum: [10,100] 
+      tags: 
+        - orders
+        - 3rd-Party
+      description: Get the List of order from the system.
+      responses:
+        '200':
+          description: The list of recently added orders  will be returned.
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://api.swaggerhub.com/domains/VinodhThiagarajan1309/just-orders-domain-objects/1.0.0#/components/schemas/Order'
+        '400':
+          description: The Submitted Request is Malformed.
+          content:
+            application/json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/VinodhThiagarajan1309/just-orders-domain-objects/1.0.0#/components/schemas/BadRequestMadeModel'
+  /orders/{orderId}:
+    get:
+      tags: 
+        - orders
+        - 3rd-Party
+      operationId: get-v1-order
+      description: Get 1 order based on a UUID
+      parameters: 
+        - in: path
+          name: orderId
+          description: The UUID of the Order that needs to be retreived.
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: A successful retrieval of the Order
+          content:
+            application/json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/VinodhThiagarajan1309/just-orders-domain-objects/1.0.0#/components/schemas/Order'
+        '400':
+          description: The Submitted Request is Malformed.
+          content:
+            application/json:
+              schema:
+                $ref: 'https://api.swaggerhub.com/domains/VinodhThiagarajan1309/just-orders-domain-objects/1.0.0#/components/schemas/BadRequestMadeModel'
